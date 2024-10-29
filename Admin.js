@@ -41,7 +41,7 @@ async function fetchExpenses() {
             row.appendChild(descriptionCell);
 
             const amountCell = document.createElement('td');
-            amountCell.textContent = `$${amount.toFixed(2)}`; // Adding dollar sign for clarity
+            amountCell.textContent = `${amount.toFixed(2)} Rs.`; // Adding dollar sign for clarity
             row.appendChild(amountCell);
 
             expenseData.appendChild(row);
@@ -62,7 +62,7 @@ function displayMonthlyTotals(monthlyTotals) {
         const totalRow = document.createElement('tr');
         const totalCell = document.createElement('td');
         totalCell.colSpan = 2; // Span across Date and Description columns
-        totalCell.textContent = `Total for ${monthYear}: $${monthlyTotals[monthYear].toFixed(2)}`;
+        totalCell.textContent = `Total expenses of  ${monthYear} :  ${monthlyTotals[monthYear].toFixed(2)} Rs.`;
         totalCell.style.fontWeight = 'bold'; // Make it bold
         totalRow.appendChild(totalCell);
 
