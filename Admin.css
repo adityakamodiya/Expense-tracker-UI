@@ -1,0 +1,60 @@
+/* Styling the body */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Styling the header */
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    max-width: 600px;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Header row styling */
+table thead tr {
+    background-color: #4CAF50;
+    color: white;
+}
+
+table thead th {
+    padding: 15px;
+    text-align: left;
+    font-size: 18px;
+}
+
+/* Table cell styling */
+table tbody td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+}
+
+/* Hover effect on table rows */
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Last row border removal */
+table tbody tr:last-child td {
+    border-bottom: none;
+}
