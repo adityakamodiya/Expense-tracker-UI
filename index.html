@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h2>Expense Tracker Form</h2>
+    <form id="expenseForm">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="description">Spending Description:</label>
+        <input type="text" id="description" name="description" placeholder="Enter description" required>
+
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Link to the admin page -->
+    <p>
+        <a href="../admin pannel/Admin.html">Go to Admin Page</a>
+    </p>
+
+    <script>
+        document.getElementById("expenseForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const data = {
+                date: document.getElementById("date").value,
+                description: document.getElementById("description").value,
+                amount: document.getElementById("amount").value
+            };
+
+            const response = await fetch("https://expense-tracker-backend-l100.onrender.com/expenses", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert("Data sent successfully");
+                // Optionally, reset the form after submission
+                document.getElementById("expenseForm").reset();
+            } else {
+                console.log("Error sending data");
+            }
+        });
+    </script>
+</body>
+</html>
