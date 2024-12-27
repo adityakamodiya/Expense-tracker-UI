@@ -8,6 +8,10 @@
 </head>
 <body>
     <h2>Expense Tracker Form</h2>
+
+    <!-- Logout Button -->
+    <button id="logoutButton" style="float: right; margin-bottom: 20px;">Logout</button>
+
     <form id="expenseForm">
         <label for="date">Date:</label>
         <input type="date" id="date" name="date" required>
@@ -27,29 +31,48 @@
     </p>
 
     <script>
+        // Redirect to login page if no token is present
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("You are not authorized. Please log in.");
+            window.location.href = "/Login.html"; // Redirect to login page
+        }
+
+        // Logout functionality
+        document.getElementById("logoutButton").addEventListener("click", () => {
+            localStorage.removeItem("token"); // Clear token
+            alert("You have been logged out.");
+            window.location.href = "Login.html"; // Redirect to login page
+        });
+
         document.getElementById("expenseForm").addEventListener("submit", async (event) => {
             event.preventDefault();
 
             const data = {
                 date: document.getElementById("date").value,
                 description: document.getElementById("description").value,
-                amount: document.getElementById("amount").value
+                amount: document.getElementById("amount").value,
             };
 
             const response = await fetch("https://expense-tracker-backend-l100.onrender.com/expenses", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // Attach the token
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
             });
 
             if (response.ok) {
                 alert("Data sent successfully");
                 // Optionally, reset the form after submission
                 document.getElementById("expenseForm").reset();
+            } else if (response.status === 401) {
+                alert("Unauthorized. Please log in again.");
+                localStorage.removeItem("token"); // Clear token
+                window.location.href = "/Login.html"; // Redirect to login page
             } else {
-                console.log("Error sending data");
+                alert("Error sending data");
             }
         });
     </script>

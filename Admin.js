@@ -1,6 +1,31 @@
 async function fetchExpenses() {
     try {
-        const response = await fetch('https://expense-tracker-backend-l100.onrender.com/data'); // Adjust the endpoint as needed
+        // Retrieve the token from localStorage or another storage mechanism
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            alert('You must be logged in to view this page.');
+            window.location.href = 'Login.html'; // Redirect to login page
+            return;
+        }
+        // https://expense-tracker-backend-l100.onrender.com/data
+        // Fetch expenses with Authorization header
+        const response = await fetch('https://expense-tracker-backend-l100.onrender.com/data', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+                alert('Authentication failed. Please log in again.');
+                window.location.href = '/login.html'; // Redirect to login page
+            } else {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            return;
+        }
+
         const expenses = await response.json();
 
         // Sort expenses by date in ascending order
@@ -41,7 +66,7 @@ async function fetchExpenses() {
             row.appendChild(descriptionCell);
 
             const amountCell = document.createElement('td');
-            amountCell.textContent = `${amount.toFixed(2)} Rs.`; // Adding dollar sign for clarity
+            amountCell.textContent = `${amount.toFixed(2)} Rs.`; // Adding currency symbol for clarity
             row.appendChild(amountCell);
 
             expenseData.appendChild(row);
@@ -62,7 +87,7 @@ function displayMonthlyTotals(monthlyTotals) {
         const totalRow = document.createElement('tr');
         const totalCell = document.createElement('td');
         totalCell.colSpan = 2; // Span across Date and Description columns
-        totalCell.textContent = `Total expenses of  ${monthYear} :  ${monthlyTotals[monthYear].toFixed(2)} Rs.`;
+        totalCell.textContent = `Total expenses of ${monthYear} : ${monthlyTotals[monthYear].toFixed(2)} Rs.`;
         totalCell.style.fontWeight = 'bold'; // Make it bold
         totalRow.appendChild(totalCell);
 
@@ -74,4 +99,5 @@ function displayMonthlyTotals(monthlyTotals) {
     }
 }
 
-fetchExpenses(); // Call the function to load data when the page loads
+// Call the function to load data when the page loads
+fetchExpenses();
