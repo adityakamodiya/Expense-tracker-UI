@@ -121,12 +121,17 @@ async function fetchExpenses() {
 function displayMonthlyTotals(monthlyTotals) {
     const expenseData = document.getElementById('expenseData');
 
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
     for (const monthYear in monthlyTotals) {
+        const [year, month] = monthYear.split('-'); // Split year and month
+        const formattedMonthYear = `${monthNames[parseInt(month) - 1]} ${year}`; // Convert to "Jan 2024" format
+
         // Create a new row for the monthly total
         const totalRow = document.createElement('tr');
         const totalCell = document.createElement('td');
         totalCell.colSpan = 2; // Span across Date and Description columns
-        totalCell.textContent = `Total expenses of ${monthYear} : ${monthlyTotals[monthYear].toFixed(2)} Rs.`;
+        totalCell.textContent = `Total expenses of ${formattedMonthYear} : ${monthlyTotals[monthYear].toFixed(2)} Rs.`;
         totalCell.style.fontWeight = 'bold'; // Make it bold
         totalRow.appendChild(totalCell);
 
@@ -134,10 +139,11 @@ function displayMonthlyTotals(monthlyTotals) {
         amountCell.textContent = ''; // Empty cell for amount in total row
         totalRow.appendChild(amountCell);
 
-        // expenseData.appendChild(totalRow);
-        expenseData.prepend(totalRow)
+        // Prepend the row (newest totals appear first)
+        expenseData.prepend(totalRow);
     }
 }
+
 
 // Call the function to load data when the page loads
 fetchExpenses();
