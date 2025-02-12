@@ -1,60 +1,112 @@
-/* Styling the body */
+/* General body styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f4f4f9;
-    color: #333;
+    justify-content: center;
+    background: linear-gradient(to right, #eef2f3, #d9e4ec); /* Soft blue gradient */
+    color: #2c3e50;
     margin: 0;
     padding: 20px;
+    min-height: 100vh;
 }
 
-/* Styling the header */
+/* Header styling */
 h2 {
-    font-size: 24px;
-    color: #333;
+    font-size: 28px;
+    color: #1a1a2e;
     margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Table container */
+.table-container {
+    width: 90%;
+    max-width: 800px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
 }
 
 /* Table styling */
 table {
     width: 100%;
-    max-width: 600px;
     border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    margin-top: 10px;
-    border-radius: 8px;
+    background: #fff;
+    border-radius: 10px;
     overflow: hidden;
+    min-width: 400px;
 }
 
-/* Header row styling */
-table thead tr {
-    background-color: #4CAF50;
+/* Table header styling */
+thead {
+    background: #34495e; /* Dark navy for contrast */
     color: white;
 }
 
-table thead th {
-    padding: 15px;
+thead th {
+    padding: 16px;
     text-align: left;
     font-size: 18px;
+    white-space: nowrap;
+}
+
+/* Table row styling */
+tbody tr {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Alternate row colors */
+tbody tr:nth-child(even) {
+    background-color: #f0f8ff; /* Soft pastel blue */
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* White */
 }
 
 /* Table cell styling */
-table tbody td {
-    padding: 12px;
+tbody td {
+    padding: 14px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
     font-size: 16px;
+    border-bottom: 1px solid #ddd;
 }
 
-/* Hover effect on table rows */
-table tbody tr:hover {
-    background-color: #f1f1f1;
+/* Row hover effect */
+tbody tr:hover {
+    background: #d6eaf8; /* Light blue glow */
+    transform: scale(1.02);
 }
 
 /* Last row border removal */
-table tbody tr:last-child td {
+tbody tr:last-child td {
     border-bottom: none;
+}
+
+/* 📱 Mobile-Friendly Design */
+@media (max-width: 600px) {
+    .table-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    table {
+        font-size: 14px;
+        min-width: 100%;
+    }
+
+    thead th {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    tbody td {
+        padding: 10px;
+        font-size: 14px;
+    }
 }

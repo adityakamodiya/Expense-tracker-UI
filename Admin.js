@@ -1,15 +1,13 @@
 async function fetchExpenses() {
     try {
-        // Retrieve the token from localStorage or another storage mechanism
         const token = localStorage.getItem('token');
 
         if (!token) {
             alert('You must be logged in to view this page.');
-            window.location.href = 'Login.html'; // Redirect to login page
+            window.location.href = 'Login.html';
             return;
         }
-        // https://expense-tracker-backend-l100.onrender.com/data
-        // Fetch expenses with Authorization header
+
         const response = await fetch('https://expense-tracker-backend-l100.onrender.com/data', {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -19,7 +17,7 @@ async function fetchExpenses() {
         if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
                 alert('Authentication failed. Please log in again.');
-                window.location.href = '/login.html'; // Redirect to login page
+                window.location.href = '/login.html';
             } else {
                 throw new Error(`Error: ${response.statusText}`);
             }
@@ -29,27 +27,26 @@ async function fetchExpenses() {
         const expenses = await response.json();
 
         // Sort expenses by date in ascending order
-        expenses.sort((a, b) => new Date(a.date) - new Date(b.date));
+        expenses.sort((a, b) => new Date(a.date) -new Date(b.date));
 
         const expenseData = document.getElementById('expenseData');
         expenseData.innerHTML = ''; // Clear existing rows
 
-        // Object to hold the total amount per month
         const monthlyTotals = {};
         let currentMonthYear = '';
-
+        // console.log(expenses[expenses.length-1]._id);
         expenses.forEach(expense => {
+            let d1 = new Date(expense.date)
+            console.log(d1.toString().slice(0,15))
             const date = new Date(expense.date);
-            const monthYear = `${date.getFullYear()}-${date.getMonth() + 1}`; // Format: YYYY-MM
-            const amount = parseFloat(expense.amount); // Ensure amount is a number
+            const monthYear = `${date.getFullYear()}-${date.getMonth() + 1}`;
+            const amount = parseFloat(expense.amount);
 
-            // Update the monthly total
             if (!monthlyTotals[monthYear]) {
                 monthlyTotals[monthYear] = 0;
             }
             monthlyTotals[monthYear] += amount;
 
-            // If we're in a new month, add a total row before adding the expense rows
             if (currentMonthYear !== monthYear) {
                 currentMonthYear = monthYear;
             }
@@ -58,7 +55,7 @@ async function fetchExpenses() {
             const row = document.createElement('tr');
 
             const dateCell = document.createElement('td');
-            dateCell.textContent = expense.date;
+            dateCell.textContent = d1.toString().slice(3,15);
             row.appendChild(dateCell);
 
             const descriptionCell = document.createElement('td');
@@ -66,18 +63,60 @@ async function fetchExpenses() {
             row.appendChild(descriptionCell);
 
             const amountCell = document.createElement('td');
-            amountCell.textContent = `${amount.toFixed(2)} Rs.`; // Adding currency symbol for clarity
+            amountCell.textContent = `${amount.toFixed(2)} Rs.`;
             row.appendChild(amountCell);
 
-            expenseData.appendChild(row);
+            // Add Delete button
+            // const actionCell = document.createElement('td');
+            // const deleteButton = document.createElement('button');
+            // deleteButton.textContent = 'Delete';
+            // deleteButton.className = 'delete-btn';
+
+            // actionCell.appendChild(deleteButton);
+            // row.appendChild(actionCell);
+
+            expenseData.prepend(row);
+            // deleteButton.onclick = async () => {
+
+            //     await deleteExpense(expense._id); // Call deleteExpense function
+            //     await fetchExpenses(); // Refresh the table after deletion
+            // };
         });
 
-        // After processing all expenses, display monthly totals
         displayMonthlyTotals(monthlyTotals);
     } catch (error) {
         console.error('Error fetching expenses:', error);
     }
 }
+
+// async function deleteExpense(id) {
+//     try {
+//         const token = localStorage.getItem('token');
+//         if (!token) {
+//             throw new Error('No token found. Please log in again.');
+//         }
+
+//         const response = await fetch(`https://expense-tracker-backend-l100.onrender.com/${id}`, {
+//             method: 'DELETE',
+//             headers: {
+//                 'Authorization': `Bearer ${token}`
+//             }
+//         });
+
+//         console.log('Response:', response);
+
+//         if (!response.ok) {
+//             throw new Error(`Failed to delete expense. Server returned status ${response.status}`);
+//         }
+
+//         alert('Expense deleted successfully.');
+//     } catch (error) {
+//         console.error('Error deleting expense:', error.message);
+//         alert('Error deleting expense. Please try again.');
+//     }
+// }
+
+
 
 function displayMonthlyTotals(monthlyTotals) {
     const expenseData = document.getElementById('expenseData');
@@ -95,7 +134,8 @@ function displayMonthlyTotals(monthlyTotals) {
         amountCell.textContent = ''; // Empty cell for amount in total row
         totalRow.appendChild(amountCell);
 
-        expenseData.appendChild(totalRow);
+        // expenseData.appendChild(totalRow);
+        expenseData.prepend(totalRow)
     }
 }
 
