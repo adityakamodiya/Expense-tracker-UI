@@ -134,6 +134,7 @@ button:hover {
         let form  = document.querySelector("form")
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    alert('please wait till ....log in')
 
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -161,6 +162,8 @@ form.addEventListener("submit", async (e) => {
         console.error("Error:", error);
         alert("An error occurred during login.");
     }
+
+
 });
 
     </script>
